@@ -46,24 +46,22 @@ function getCols() {
     });
 
     _.forEach(y1, (_item, idx) => {
-      console.log(
-        "%c [ y1 ]-49",
-        "font-size:13px; background:#17b536; color:#5bf97a;",
-        y1
-      );
+      const y1IdxItem = y1[idx];
       const y1Item = {
-        title: `${keys[0]}（${y1[idx].labelName}的 ${
-          TypeOptions[y1[idx].analysisDimension]
+        title: `${keys[0]}（${y1IdxItem.labelName}的 ${
+          TypeOptions[y1IdxItem.analysisDimension]
         }）`,
-        key: `${y1[idx].labelCode}_0`,
-        dataIndex: `${y1[idx].labelCode}_0`,
+        key: `${y1IdxItem.labelCode}_0`,
+        dataIndex: `${y1IdxItem.labelCode}_0`,
       };
+
+      const y2IdxItem = y2[idx];
       const y2Item = {
-        title: `${keys[1]}（${y2[idx].labelName}的 ${
-          TypeOptions[y2[idx].analysisDimension]
+        title: `${keys[1]}（${y2IdxItem.labelName}的 ${
+          TypeOptions[y2IdxItem.analysisDimension]
         }）`,
-        key: `${y2[idx].labelCode}_1`,
-        dataIndex: `${y2[idx].labelCode}_1`,
+        key: `${y2IdxItem.labelCode}_1`,
+        dataIndex: `${y2IdxItem.labelCode}_1`,
       };
       yy.push(y1Item);
       yy.push(y2Item);
@@ -82,65 +80,20 @@ console.log(
   cols
 );
 
-// console.log(
-//   "%c [ ySource ]-22",
-//   "font-size:13px; background:#d24fe4; color:#ff93ff;",
-//   ySource
-// );
-// // 去重数组
-// console.log(
-//   "%c [ xSource ]-35",
-//   "font-size:13px; background:#9be044; color:#dfff88;",
-//   xSource
-// );
+// 数组对象
+let dataSource = [];
+_.forEach(analysisMap, (column) => {
+  _.forEach(column, (list) => {
+    let obj = {};
+    _.map(list, (listItem) => {
+      obj[listItem.labelCode] = listItem.value;
+    });
+    dataSource.push(obj);
+  });
+});
 
-// const sourceCols = [...xSource, ...ySource];
-// console.log(
-//   "%c [ sourceCols ]-39",
-//   "font-size:13px; background:#d7f257; color:#ffff9b;",
-//   sourceCols
-// );
-
-// // 格式化数组 item
-// const columns = _.map(sourceCols, (column) => {
-//   const cgTitle = Object.keys(analysisMap);
-//   console.log('%c [ cgTitle ]-27', 'font-size:13px; background:#5ff632; color:#a3ff76;', cgTitle)
-//   if (column.analysisType === "Y") {
-//     return {
-//       title: `${cgTitle}(${column.labelName})的${
-//         TypeOptions[column.analysisDimension]
-//       }`,
-//       key: column.labelCode,
-//       dataIndex: column.labelCode,
-//     };
-//   }
-//   return {
-//     title: column.labelName,
-//     key: column.labelCode,
-//     dataIndex: column.labelCode,
-//   };
-// });
-
-// console.log(
-//   "%c [ columns ]-13",
-//   "font-size:13px; background:#5db725; color:#a1fb69;",
-//   columns
-// );
-
-// // 数组对象
-// let dataSource = [];
-// _.forEach(analysisMap, (column) => {
-//   _.forEach(column, (list) => {
-//     let obj = {};
-//     _.map(list, (listItem) => {
-//       obj[listItem.labelCode] = listItem.value;
-//     });
-//     dataSource.push(obj);
-//   });
-// });
-
-// console.log(
-//   "%c [ dataSource ]-21",
-//   "font-size:13px; background:#a43e59; color:#e8829d;",
-//   dataSource
-// );
+console.log(
+  "%c [ dataSource ]-21",
+  "font-size:13px; background:#a43e59; color:#e8829d;",
+  dataSource
+);
