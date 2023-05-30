@@ -1,4 +1,4 @@
-const { analysisMap } = Tabledata
+const { analysisMap } = Tabledata;
 
 let TypeOptions = {
   sum: "总和",
@@ -6,67 +6,75 @@ let TypeOptions = {
   max: "最大值",
   avg: "均值",
   cg_count: "客群人数",
-}
+};
 
-const analysisMapClone = _.cloneDeep(analysisMap)
+const analysisMapClone = _.cloneDeep(analysisMap);
 // 全局使用的 keys
-const keys = Object.keys(analysisMapClone)
+const keys = Object.keys(analysisMapClone);
 
 // 小于一半
 function lessHalf(list, idx) {
   // 如果只有一个 key 则不需要分组
   if (keys.length < 2) {
-    return true
+    return true;
   }
-  return idx < (list.length - 1) / 2
+  return idx < (list.length - 1) / 2;
 }
 
 // 区分 key 用的 index
 function getIdx(list, idx) {
-  return lessHalf(list, idx) ? 0 : 1
+  return lessHalf(list, idx) ? 0 : 1;
 }
 
 function getTitle(list, idx, item) {
-  const titlePrefix = lessHalf(list, idx, keys) ? keys[0] : keys[1]
-  const prefix = titlePrefix.split("_")[1]
-  const title = `${prefix}「${item.labelName}的${TypeOptions[item.analysisDimension]}」`
-  return title
+  const titlePrefix = lessHalf(list, idx, keys) ? keys[0] : keys[1];
+  const prefix = titlePrefix.split("_")[1];
+  const titleItem =
+    item.analysisDimension === "cg_count"
+      ? "客群人数"
+      : `${item.labelName}的${TypeOptions[item.analysisDimension]}`;
+  const title = `${prefix}(${titleItem})`;
+  return title;
 }
 
 function getCols() {
-  const xSource = []
-  const ySource = []
+  const xSource = [];
+  const ySource = [];
 
   _.forEach(analysisMapClone, (list) => {
-    const xItem = _.filter(list[0], (item) => item.analysisType === "X")
+    const xItem = _.filter(list[0], (item) => item.analysisType === "X");
     const xList = _.map(xItem, (item) => {
       return {
         title: item.labelName,
         key: item.labelCode,
         dataIndex: item.labelCode,
-      }
-    })
+      };
+    });
     if (_.isEmpty(xSource)) {
-      xSource.push(...xList)
+      xSource.push(...xList);
     }
-    ySource.push(..._.filter(list[0], (item) => item.analysisType === "Y"))
-  })
+    ySource.push(..._.filter(list[0], (item) => item.analysisType === "Y"));
+  });
 
   const yList = _.map(ySource, (item, idx) => {
-    const title = getTitle(ySource, idx, item)
+    const title = getTitle(ySource, idx, item);
     return {
       title,
       key: `${item.labelCode}_${getIdx(ySource, idx, keys)}`,
       dataIndex: `${item.labelCode}_${getIdx(ySource, idx, keys)}`,
-    }
-  })
+    };
+  });
 
-  return [...xSource, ...yList]
+  return [...xSource, ...yList];
 }
 
-const cols = getCols()
+const cols = getCols();
 
-console.log("%c [ cols ]-56", "font-size:13px; background:#14844b; color:#58c88f;", cols)
+console.log(
+  "%c [ cols ]-56",
+  "font-size:13px; background:#14844b; color:#58c88f;",
+  cols
+);
 
 // 数组对象
 // let dataSource = []
