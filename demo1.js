@@ -9,6 +9,30 @@ let TypeOptions = {
 }
 
 const analysisMapClone = _.cloneDeep(analysisMap)
+// 全局使用的 keys
+const keys = Object.keys(analysisMapClone)
+
+// 小于一半
+function lessHalf(list, idx) {
+  // 如果只有一个 key 则不需要分组
+  if (keys.length < 2) {
+    return true
+  }
+  return idx < (list.length - 1) / 2
+}
+
+// 区分 key 用的 index
+function getIdx(list, idx) {
+  return lessHalf(list, idx) ? 0 : 1
+}
+
+function getTitle(list, idx, item) {
+  const titlePrefix = lessHalf(list, idx, keys) ? keys[0] : keys[1]
+  const prefix = titlePrefix.split("_")[1]
+  const title = `${prefix}「${item.labelName}的${TypeOptions[item.analysisDimension]}」`
+  return title
+}
+
 function getCols() {
   const xSource = []
   const ySource = []
@@ -28,45 +52,16 @@ function getCols() {
     ySource.push(..._.filter(list[0], (item) => item.analysisType === "Y"))
   })
 
-  const y1 = []
-  const y2 = []
-  let yy = []
-  const yLen = ySource.length
+  const yList = _.map(ySource, (item, idx) => {
+    const title = getTitle(ySource, idx, item)
+    return {
+      title,
+      key: `${item.labelCode}_${getIdx(ySource, idx, keys)}`,
+      dataIndex: `${item.labelCode}_${getIdx(ySource, idx, keys)}`,
+    }
+  })
 
-  // 如果是多个 key 则分成两个数组
-  const keys = Object.keys(analysisMapClone)
-
-  // 判断有几个 key
-  if (keys.length > 1) {
-    _.forEach(ySource, (item, index) => {
-      if (index < (yLen - 1) / 2) {
-        y1.push(item)
-      } else {
-        y2.push(item)
-      }
-    })
-
-    _.forEach(y1, (_item, idx) => {
-      const y1IdxItem = y1[idx]
-      const y1Item = {
-        title: `${keys[0]}（${y1IdxItem.labelName}的 ${TypeOptions[y1IdxItem.analysisDimension]}）`,
-        key: `${y1IdxItem.labelCode}_0`,
-        dataIndex: `${y1IdxItem.labelCode}_0`,
-      }
-
-      const y2IdxItem = y2[idx]
-      const y2Item = {
-        title: `${keys[1]}（${y2IdxItem.labelName}的 ${TypeOptions[y2IdxItem.analysisDimension]}）`,
-        key: `${y2IdxItem.labelCode}_1`,
-        dataIndex: `${y2IdxItem.labelCode}_1`,
-      }
-      yy.push(y1Item)
-      yy.push(y2Item)
-    })
-  } else {
-    yy = ySource
-  }
-  return [...xSource, ...yy]
+  return [...xSource, ...yList]
 }
 
 const cols = getCols()
