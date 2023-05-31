@@ -70,38 +70,68 @@ function getCols() {
 
 const cols = getCols();
 
-console.log(
-  "%c [ cols ]-56",
-  "font-size:13px; background:#14844b; color:#58c88f;",
-  cols
-);
+function getCompareList(sortList) {
+  const [maxLengthArr, minLengthArr] = sortList;
+  const compareMinList = [];
+  const compareMaxList = [];
+  _.forEach(maxLengthArr, (itemList, index) => {
+    for (let idx = 0; idx < itemList.length; idx++) {
+      const maxItem = itemList[idx];
+      if (maxItem.analysisType !== "X") return;
+      const minItem = minLengthArr[index]?.[idx];
 
-// 数组对象
-// let dataSource = []
-// _.forEach(analysisMapClone, (column) => {
-//   console.log("%c AT 🥝 column 🥝-86", "font-size:13px; background:#d09064; color:#ffd4a8;", column)
-//   let obj = {}
-//   _.forEach(column, (list) => {
-//     _.map(list, (listItem) => {
-//       obj[listItem.labelCode] = listItem.value
-//     })
-//   })
-//   dataSource.push(obj)
-// })
+      if (!compareMinList[index]) compareMinList[index] = [];
+      if (minItem) compareMinList[index].push(minItem.value);
 
-// const ll = []
-// _.forEach(analysisMapClone, (col) => {
-//   _.forEach(col, (lItem, idx) => {
-//     // console.log('%c AT 🥝 idx 🥝-92', 'font-size:13px; background:#a8a66f; color:#eceab3;', idx)
-//     // console.log('%c AT 🥝 lItem 🥝-92', 'font-size:13px; background:#8adc5d; color:#ceffa1;', lItem)
-//     if (_.isEmpty(ll[idx])) {
-//       ll[idx] = []
-//     }
-//     // ll[idx].push(...lItem)
-//     _.forEach(lItem, (item) => {
-//       console.log("%c AT 🥝 item 🥝-99", "font-size:13px; background:#1a91d4; color:#5ed5ff;", item)
-//     })
-//   })
-// })
+      if (!compareMaxList[index]) compareMaxList[index] = [];
+      compareMaxList[index].push(maxItem.value);
+    }
+  });
+  return [compareMinList, compareMaxList];
+}
 
-// console.log("%c AT 🥝 ll 🥝-92", "font-size:13px; background:#9059fa; color:#d49dff;", ll)
+// 数组对齐
+function listAlignment(obj) {
+  const arr = _.map(obj, (item) => item);
+
+  // 如果只有一项则不需要补齐直接返回
+  if (arr.length === 1) return arr;
+
+  // 如果一样长则不做处理直接返回
+  if (arr[0].length === arr[1].length) return arr;
+
+  // 按照数组的 length 长度，进行排序
+  const sortList = arr.sort((a, b) => b.length - a.length);
+
+  // 取出长的数组进行遍历，补齐短的数组，
+  const [maxLengthArr, minLengthArr] = sortList;
+
+  const minArr = [];
+
+  const [compareMinList, compareMaxList] = getCompareList(sortList);
+
+  console.log(
+    "%c [ compareMinList ]-99",
+    "font-size:13px; background:#826b31; color:#c6af75;",
+    compareMinList
+  );
+  console.log(
+    "%c [ compareMaxList ]-108",
+    "font-size:13px; background:#93d0f9; color:#d7ffff;",
+    compareMaxList
+  );
+
+  _.map(compareMaxList, (item, i) => {
+    const minMaxIsEq = _.find(compareMinList, (minItem) =>
+      _.isEqual(minItem, item)
+    );
+
+    console.log(
+      "%c [ minMaxIsEq ]-126",
+      "font-size:13px; background:#d3b287; color:#fff6cb;",
+      minMaxIsEq
+    );
+  });
+}
+
+listAlignment(analysisMapClone);

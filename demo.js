@@ -102,3 +102,34 @@ console.log("%c [ cols ]-56", "font-size:13px; background:#14844b; color:#58c88f
 // })
 
 // console.log("%c AT 🥝 ll 🥝-92", "font-size:13px; background:#9059fa; color:#d49dff;", ll)
+
+// const list = [
+//   {
+//     ol_cls_246: "男",
+//     ol_cls_229: "JDZAD",
+//     ol_stats_161_0: "",
+//     ol_stats_161_1: "",
+//     ol_stats_200_0: "2.0000",
+//     ol_stats_200_1: "2.0000",
+//     ol_stats_201_0: "6.000000",
+//     ol_stats_201_1: "6.000000",
+//     ol_stats_202_0: "11.0000",
+//     ol_stats_202_1: "11.0000",
+//     cg_count_0: "1",
+//     cg_count_1: "1",
+//   },
+//   {
+//     ol_cls_246: "男",
+//     ol_cls_229: "JDZAD",
+//     ol_stats_161_0: "",
+//     ol_stats_161_1: "",
+//     ol_stats_200_0: "2.0000",
+//     ol_stats_200_1: "2.0000",
+//     ol_stats_201_0: "6.000000",
+//     ol_stats_201_1: "6.000000",
+//     ol_stats_202_0: "11.0000",
+//     ol_stats_202_1: "11.0000",
+//     cg_count_0: "1",
+//     cg_count_1: "1",
+//   },
+// ];

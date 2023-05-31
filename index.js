@@ -300,7 +300,8 @@ const Tabledata = {
       ],
     ],
   },
-}
+  keys: ["50_客群多维分析-勿动", "51_客群多维分析2-勿动"],
+};
 
 // 简化版原始数据
 const sourceData = {
@@ -327,7 +328,7 @@ const sourceData = {
       ],
     ],
   },
-}
+};
 
 // 转换后的期望数据格式
 const columns = [
@@ -335,7 +336,7 @@ const columns = [
     title: "分类标签-有明细表-无明细条件",
     key: "ol_cls_246",
   },
-]
+];
 
 // 转换后的 dataSource
 // const dataSource = [
@@ -359,4 +360,4 @@ const list = [
     cg_count_0: "1",
     cg_count_1: "1",
   },
-]
+];
