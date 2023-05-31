@@ -1,4 +1,9 @@
 const { analysisMap } = Tabledata;
+console.log(
+  "%c [ analysisMap ]-2",
+  "font-size:13px; background:#f4a17c; color:#ffe5c0;",
+  analysisMap
+);
 
 let TypeOptions = {
   sum: "总和",
@@ -135,3 +140,60 @@ function listAlignment(obj) {
 }
 
 listAlignment(analysisMapClone);
+
+function getList() {
+  const list = [];
+  _.forEach(analysisMapClone, (item, i) => {
+    list.push(item);
+  });
+  if (list.length === 1) return list;
+  return [list[0], list[1]];
+}
+
+// 分别拿到两个数组
+// 将第二个数组中每一项的 Y 留下
+// 遍历第一个数组，将 Y 填充进去
+function sourceDataFormat(analysisMapClone) {
+  const [list1, list2] = getList(analysisMapClone);
+
+  const list1Format = _.map(list1, (item) => {
+    return _.map(item, (it) => {
+      return {
+        ...it,
+        labelCode: `${it.labelCode}_0`,
+      };
+    });
+  });
+  if (!list2) return formatObj(list1);
+
+  const list2List = [];
+  _.forEach(list2, (itemList, i) => {
+    for (let idx = 0; idx < itemList.length; idx++) {
+      const item = itemList[idx];
+      item.labelCode = `${item.labelCode}_1`;
+      if (item.analysisType !== "X") {
+        if (!list2List[i]) list2List[i] = [];
+        list2List[i].push(item);
+      }
+    }
+  });
+
+  // 遍历 list1，将 list2List 填充进去
+  const arr = _.map(list1Format, (item, idx) => {
+    item.push(...list2List[idx]);
+    return item;
+  });
+
+  return formatObj(arr);
+}
+
+function formatObj(arr) {
+  console.log(
+    "%c [ arr ]-191",
+    "font-size:13px; background:#95f3ce; color:#d9ffff;",
+    arr
+  );
+  return {};
+}
+
+sourceDataFormat(analysisMapClone);
