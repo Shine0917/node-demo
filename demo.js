@@ -1,3 +1,4 @@
+1
 const { analysisMap } = Tabledata
 
 let TypeOptions = {
